@@ -3,36 +3,22 @@
 layout: yandex2
 
 style: |
-    /* собственные стили можно писать здесь!! */
-    .slide em {
-        font-style: italic;
+    #qr-to-tg {
+        width: 470px;
     }
 
-    .clearfix::after {
-        content: ""; /* Генерируем пустой элемент */
-        clear: both; /* Отменяем обтекание*/
-        display: block; /* Блочный элемент */
+    #tg-link a {
+        color: black;
     }
-
-
-    .title h3 img {
-        display: none;
-    }
-
-    .title h2 {
-        width: 800px;
-    }
-
-    .title {
-        background-image: url(/shri-js/pictures/young-and-yandex.jpg);
-        background-size: contain;
-    }
-
 ---
 
 # ![](themes/yandex2/images/logo-{{ site.presentation.lang }}.svg){:.logo}
 
-## {{ site.presentation.title }}
+## Продвинутый JavaScript
+{:.fullscreen}
+![](pictures/title.jpeg)
+
+<!-- ## {{ site.presentation.title }}
 {:.title}
 
 ### ![](themes/yandex2/images/title-logo-{{ site.presentation.lang }}.svg){{ site.presentation.service }}
@@ -50,663 +36,23 @@ style: |
 {% if site.author2 %}
 <p>{{ site.author2.name }}{% if site.author2.position %}, {{ site.author2.position }}{% endif %}</p>
 {% endif %}
+</div> -->
 
-</div>
+## План лекции
 
-## JavaScript vs ECMAScript
-
-- ...<b>Ecma International</b> — организация, которая создает стандарты
-- ...<b>ECMA-262</b> — стандарт, где описан скриптовый язык
-- ...<b>ECMAScript</b> — спецификация скриптового языка из ECMA-262
-- ...<b>JavaScript</b> — язык, который соответствует спецификации ECMAScript
-
-## Краткая история
-
-- ...<b>1995</b> — JS появляется в Netscape Navigator
-- ...<b>1997</b> — первая редакция ECMAScript
-- ...<b>1998</b> — ES2
-- ...<b>1999</b> — ES3
-- ...<b>2009</b> — ES5 (режим use strict)
-- ...<b>2015</b> — ES6 (ECMAScript 2015)
-- ...<b>2016</b> — ECMAScript 2016
-- ...и т.д.
-
-## Экосистема JavaScript
-
-- ...Среда выполнения: браузер, сервер
-- ...Движок: V8, SpiderMonkey и т.д.
-- ...Полифилы
-- ...Транспайлеры
-- ...Сборщики и бандлеры
-- ...Линтеры и форматтеры
-- ...Библиотеки и фреймворки
-- ...Пакетные менеджеры
+- ...Символы
+- ...Тегированные шаблоны
+- ...Proxy и Reflextion
+- ...Генераторы и итераторы
+- ...Полезные методы массивов
+- ...Множества и словари
+- ...Новые возможности классов
+- ...Другие полезные возможности
 
 
-## Цитата
-{:.fullscreen}
-![](pictures/code.jpg)
-<figure markdown="1">
-В JavaScript я забыл больше,<br />чем большинство людей вообще знали<br />(с) Кайл Симпсон
-</figure>
-{:style="width: 800px;"}
-
-
-## <b>Типы Данных</b>
+## <b>Символы</b>
 {:.section}
 
-
-## Типы данных в JavaScript
-
-- ...`boolean`
-- ...`string`
-- ...`number`
-- ...`bigint`
-- ...`null`
-- ...`undefined`
-- ...`symbol`
-- ...<b>всё остальное</b> — `object` (ссылочный тип данных)
-
-
-## Встроенные объекты
-
-- ...`Object`
-- ...`Array`
-- ...`Function`
-- ...`RegExp`
-- ...`Date`
-- ...`Error`
-- ...и много-много других
-
-
-## Литералы для встроенных объектов
-
-```js
-new Object()
-new Array(4, 8, 15, 16, 23, 42)
-new Function('a, b', 'return a + b')
-new RegExp('\\w', 'g')
-```
-
-```js
-{}
-[4, 8, 15, 16, 23, 42]
-function (a, b) { return a + b }
-/\w/g
-```
-{:.next}
-
-
-## Кое-что можно вызывать без new
-
-```js
-new Array(3, 14, 15) // [3, 14, 15]
-Array(3, 14, 15)     // [3, 14, 15]
-```
-{:.next}
-
-```js
-// но не Date
-typeof Date()     // "string"
-typeof new Date() // "object"
-```
-{:.next}
-
-```js
-// встроенные типы после ES6 будут выдавать ошибку
-Set() // Constructor Set requires 'new'
-Promise(res => res()) // ...cannot be invoked without 'new'
-```
-{:.next}
-
-
-## Примитив vs Объект
-{:.blockquote}
-
-
-## Методы примитивов
-
-```js
-(42).toString(2) // "101010"
-```
-
-```js
-// JavaScript создаст за кулисами обертку
-(new Number(42)).toString(2)
-```
-{:.next}
-
-
-## Обертки над примитивами
-
-```js
-const number = new Number(42)
-const string = new String('JavaScript')
-const boolean = new Boolean(false)
-```
-
-```js
-// Ведут себя странно:
-if (boolean) {
-    // выполнится, несмотря на false
-}
-```
-{:.next}
-
-```js
-// Обертка без new — это функция для преобразования типа
-Number('137') // 137
-String(42)    // "42"
-Boolean(null) // false
-```
-{:.next}
-
-
-## Определение типа
-{:.section}
-
-## Оператор typeof
-
-Вернет строку, которая укажет тип операнда
-
-```js
-typeof 42 // "number"
-typeof 100500n // "bigint"
-typeof 'JavaScript' // "string"
-```
-{:.next}
-
-```js
-typeof {} // "object"
-typeof [] // "object"
-```
-{:.next}
-
-```js
-// две особенности typeof
-typeof null // "object"
-typeof function () {} // "function"
-```
-{:.next}
-
-
-## Оператор instanceof
-
-```js
-[] instanceof Array // true
-```
-{:.next}
-
-```js
-// просматривает всю цепочку прототипов
-[] instanceof Object // true
-```
-{:.next}
-
-```js
-// прототипы в разных фреймах — разные
-[] instanceof window.frames[0].Array // false
-```
-{:.next}
-
-## Утиная типизация
-{:.fullscreen}
-![](pictures/duck-typing.jpg)
-<figure markdown="1">
-Утиная типизация
-</figure>
-{:style="width: 600px;"}
-
-## Преобразование типов
-{:.section}
-
-## Ссылка на лекцию
-{:.fullscreen}
-![](pictures/type-converting.jpg)
-<figure markdown="1">
-[Продвинутый JS<br />Летние школы 2022 ШРИ](https://www.youtube.com/watch?v=5Qq8QjoLTqg&t=818s)
-</figure>
-{:style="width: 700px;"}
-
-
-## JSON.stringify
-
-```js
-// Сигнатура
-JSON.stringify(value, replacer, space)
-```
-
-- ...Попробует вызвать `toJSON`
-- ...Свойства: `function`, `undefined`, `symbol`
-    - ...В объекте удалятся
-    - ...В массиве превратятся в `null`
-- ...`NaN`, `Infinity` тоже превратятся `null`
-- ...Встроенные объекты без `toJSON` превратятся в `{}`
-
-## JSON.parse
-```js
-// Сигнатура
-JSON.parse(value, reviver)
-```
-
-```js
-const string = JSON.stringify({ date: new Date })
-
-JSON.parse(string) // { date: "1997-09-23T12:00:00.000Z" }
-```
-{:.next}
-
-```js
-const dateTimeReviver = (key, value) =>
-    key === 'date' ? Date.parse(value) : value
-```
-{:.next}
-
-```js
-JSON.parse(string, dateTimeReviver) // { date: 875016000000 }
-```
-{:.next}
-
-
-## Сравнение в JavaScript
-
-- ...`===` / `!==` — сравнение без преобразований
-- ...Объекты всегда сравниваются по ссылке
-
-```js
-const number = NaN
-number === number // false
-```
-{:.next}
-
-
-```js
-isNaN(NaN)      // true
-isNaN('string') // true
-```
-{:.next}
-
-
-```js
-Object.is(NaN, NaN) // true
-```
-{:.next}
-
-```js
-Object.is(+0, -0) // false
-```
-{:.next}
-
-## Где истина в JavaScript?
-
-- ...Любой объект всегда `true`
-- ...Все остальное — тоже `true`
-- ...но есть <b>7 легендарных ложных значений</b>
-
-## 7 легендарных ложных значений
-
-- ...`false`
-- ...`null`
-- ...`undefined`
-- ...`''`
-- ...`0`, `-0`, `NaN`
-
-
-<!--
-## Особенности symbol
-
-- ...Преобразование к <b>логическому типу</b> — всегда `true`
-- ...Явное или неявное преобразование к <b>числу</b> - <b>ошибка</b>
-- ...Преобразование к <b>строке</b> — только явно, через `String()` -->
-
-
-## <b>Объекты</b>
-{:.section}
-
-## Служебные и обычные свойства
-
-```js
-{
-    [[Class]]: '......',
-    [[Prototype]]: '......',
-    [[Extensible]]: '......',
-
-    [name]: {
-        value: 'something',
-        writable: true,
-        enumerable: true,
-        configurable: true,
-    }
-}
-```
-{:.next}
-
-
-## [[Class]]
-
-```js
-const array = []
-const date = new Date()
-const error = new Error()
-
-// вызов метода toString с другим контекстом
-Object.prototype.toString.call(array) // "[object Array]"
-Object.prototype.toString.call(date)  // "[object Date]"
-Object.prototype.toString.call(error) // "[object Error]"
-```
-{:.next}
-
-
-## Symbol.toStringTag
-
-```js
-Object.prototype.toString.call({}) // "[object Object]"
-```
-{:.next}
-
-```js
-const apple = {
-    [Symbol.toStringTag]: '🍎'
-}
-```
-{:.next}
-
-```js
-Object.prototype.toString.call(apple) // "[object 🍎]"
-```
-{:.next}
-
-
-
-## [[Extensible]]
-
-```js
-const object = {}
-Object.isExtensible(object) // true
-```
-{:.next}
-
-```js
-Object.preventExtensions(object)
-Object.isExtensible(object) // false
-```
-{:.next}
-
-```js
-object.apple = '🍎' // ошибка в 'use strict'
-object // {}
-```
-{:.next}
-
-
-## [[Prototype]]
-
-- ...Помогает переиспользовать код
-- ...Поиск свойств идёт по цепочке прототипов
-- ...У встроенных объектов уже есть своя иерархия
-
-
-## ____proto____
-
-...Нестандартное свойство для доступа прямо к [[Prototype]]
-
-```js
-const prototype = {apple: '🍏'}
-const object = {}
-
-object.__proto__ = prototype
-
-object.apple // 🍏
-```
-{:.next}
-
-
-## Object.setPrototypeOf
-
-```js
-const prototype = {apple: '🍏'}
-const object = {}
-
-Object.setPrototypeOf(object, prototype)
-
-object.apple // 🍏
-```
-
-
-## Object.getPrototypeOf
-
-```js
-const prototype = {apple: '🍏'}
-const object = {}
-
-Object.setPrototypeOf(object, prototype)
-```
-
-```js
-const proto = Object.getPrototypeOf(object)
-
-proto === object.__proto__  // true
-proto === prototype         // true
-```
-{:.next}
-
-
-## Object.create
-
-...Создает объект с выставленным прототипом
-
-```js
-const prototype = {apple: '🍏'}
-const object = Object.create(prototype)
-
-object.apple // 🍏
-```
-{:.next}
-
-## Динамическое изменение прототипа
-
-...Изменения прототипа сразу влияет на потомков
-
-```js
-const prototype = {apple: '🍏'}
-const object = Object.create(prototype)
-
-object.apple // 🍏
-```
-{:.next}
-
-```js
-prototype.apple = '🍎'
-object.apple // 🍎
-```
-{:.next}
-
-## Затенение свойств прототипа
-
-- ...Свойства в цепочке прототипов доступны только на чтение
-- ...При записи создается новое свойство в дочернем объекте
-
-```js
-const prototype = {apple: '🍏'}
-const object = Object.create(prototype)
-
-object.apple = '🍎'
-```
-{:.next}
-
-```js
-prototype.apple // 🍏
-object.apple // 🍎
-```
-{:.next}
-
-
-## Иерархия встроенных объектов
-
-```js
-const object = {}
-const object = Object.create(Object.prototype)
-```
-{:.next}
-
-```js
-{
-    [[Prototype]]: null,
-    valueOf: ......,
-    toString: ......,
-    hasOwnProperty: ......,
-    propertyIsEnumerable: ......,
-    isPrototypeOf: ......,
-}
-```
-{:.next}
-
-```js
-const hashTable = Object.create(null)
-```
-{:.next}
-
-
-## Дескрипторы свойств
-
-```js
-// Свойства-данные
-{
-    value,
-    writable,
-    enumerable,
-    configurable,
-}
-```
-{:.next style="float:left;" }
-
-```js
-// Свойства-аксессоры
-{
-    get,
-    set,
-    enumerable,
-    configurable,
-}
-```
-{:.next .image-right}
-
-## Определение свойства
-
-```js
-const object = {}
-
-Object.defineProperty(object, 'property', {
-    value: '🍎', // свойство
-    writable: true,
-    enumerable: true,
-    configurable: true,
-})
-
-object // { property: "🍎" }
-```
-
-## Определение метода
-
-```js
-const object = {}
-
-Object.defineProperty(object, 'method', {
-    value: function () {}, // метод
-    writable: true,
-    enumerable: true,
-    configurable: true,
-})
-
-object // { method: [Function: value] }
-```
-
-
-## getter и setter
-
-```js
-const object = {}
-
-Object.defineProperty(object, 'property', {
-    get: function () { return this.data },
-    set: function (data) { this.data = data},
-    enumerable: true,
-    configurable: true,
-})
-```
-
-```js
-object.property = '🍎' // вызов set
-object.property        // вызов get
-
-object // { property: [Getter/Setter], data: "🍎" }
-```
-{:.next}
-
-
-## get/set после ES6
-
-```js
-const object = {
-    get property () {
-        return this.data
-    }
-    set property (data) {
-        this.data = data
-    }
-}
-```
-
-```js
-object.property = '🍎' // вызов set
-object.property        // вызов get
-
-object // { property: [Getter/Setter], data: "🍎" }
-```
-{:.next}
-
-## Object.getOwnPropertyDescriptor/s
-
-```js
-const object = {apple: '🍎'}
-```
-{:.next}
-
-```js
-Object.getOwnPropertyDescriptor(object, 'apple')
-// {value: "🍎", writable: true, enumerable: true, configurable: true}
-```
-{:.next}
-
-```js
-Object.getOwnPropertyDescriptors(object)
-// {apple: {value: "🍎", writable: true, enumerable: true, configurable: true}}
-```
-{:.next}
-
-## Особенности Object.defineProperty
-
-- ...При создании свойства, неуказанные флаги — false
-- ...При изменение — только перезапись указанных флагов
-
-```js
-const object = {}
-```
-{:.next}
-
-```js
-Object.defineProperty(object, 'apple', { value: '🍎', configurable: true })
-Object.getOwnPropertyDescriptor(object, 'object')
-// { value: "🍎", writable: false, enumerable: false, configurable: true }
-```
-{:.next}
-
-```js
-Object.defineProperty(object, 'apple', { writable: true })
-Object.getOwnPropertyDescriptor(object, 'apple')
-// { value: "🍎", writable: true, enumerable: false, configurable: true }
-```
-{:.next}
 
 ## Символы
 
@@ -735,9 +81,10 @@ object // {Symbol(apple): "🍎", Symbol(apple): "🍎"}
 ```
 {:.next}
 
-## Глобальный реестр символов
+### [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
 
-...Реестр символы глобальный для всего окружения
+
+## Глобальный реестр символов
 
 ```js
 const s1 = Symbol.for('lib.apple')
@@ -753,7 +100,7 @@ object // {Symbol(lib.apple): "🍎"}
 
 ```js
 const s2 = Symbol.for('lib.apple')
-object[s2] // '🍎'
+object[s2] // "🍎"
 ```
 {:.next}
 
@@ -763,759 +110,70 @@ s1.description // "lib.apple"
 ```
 {:.next}
 
-## Встроенные символы
+### [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol)
 
-- Symbol.iterator
-- Symbol.toStringTag
-- Symbol.toPrimitive
-- Symbol.species
-- Symbol.hasInstance
-- Symbol.isConcatSpreadable
-- Symbol.unscopables
-- Symbol.match, matchAll, replace, search, split
+
+## Well-Known Symbols
+
+- ...Symbol.iterator
+- ...Symbol.toStringTag
+- ...Symbol.hasInstance
+- ...Symbol.toPrimitive
+- ...Symbol.match, matchAll, replace, search, split
 - ......
 
+### ...[Well-Known Symbols](https://262.ecma-international.org/#sec-well-known-symbols)
 
-## Информация о свойствах объекта
-
-- ...<b>in</b> — проверит объект и всю цепочку прототипов
-- ...<b>Object.hasOwn</b> — наличие свойства именно в этом объекте
-- ...<b>({}).hasOwnProperty</b> — предшественник hasOwn
-- ...<b>Object.keys</b> — только перечисляемые свойства
-- ...<b>Object.getOwnPropertyNames</b> — все свойства
-- ...<b>Object.getOwnPropertySymbols</b> — все символы
-- ...<b>Object.getOwnPropertyDescriptors</b> — все дескрипторы
-
-## Proxy и Reflection API
-
-- ...Proxy — возможность перехватить низкоуровневую операцию JavaScript
-- ...Reflection API — поведение по-умолчанию для перехваченной операции
+## Symbol.toStringTag
 
 ```js
-const object = {}
-
-const proxy = new Proxy(object, {
-    set (trapTarget, key, value, receiver) {
-        return Reflect.set(trapTarget, key, value, receiver)
-    }
-}
-
-proxy.apple = '🍎'
+String({}) // "[object Object]"
 ```
 {:.next}
 
-
-
-
-
-## <b>Функции</b>
-{:.section}
-
-## Функция — это объект
-
 ```js
-{
-    [[Call]]: '......',
-    [[Scope]]: '......',
-
-    name: '......', // название функции
-    length: '......', // кол-во параметров
-    prototype: '......' // ??
-}
-```
-{:.next}
-
-## Функциональные объявления и выражения
-
-```js
-function awesome () {
-    // функциональное объявление
+const apple = {
+    [Symbol.toStringTag]: '🍎'
 }
 ```
 {:.next}
 
 ```js
-const awesome = function () {
-    // функциональное выражение
-}
+String(apple) // "[object 🍎]"
 ```
 {:.next}
 
-```js
-const awesome = function something () {
-    // именованное функциональное выражение
-}
-```
-{:.next}
+### ...[Examples of Well-Known Symbols](https://exploringjs.com/js/book/ch_symbols.html#publicly-known-symbols)
 
 
-## Стрелочные функции
-
-- ...Могут создаваться только как выражения
-- ...Понятное взаимодействие с this
-- ...Отсутствие arguments
+## Symbol.hasInstance
 
 ```js
-const awesome = (...args) => {
-    // функциональное выражение
-}
-```
-{:.next}
-
-## IIFE — Immediately Invoked Fn Expression
-
-```js
-(function () {
-    // IIFE
-})()
-```
-{:.next}
-
-```js
-const module = (function (fruits) {
-    return {
-        add(fruit) {
-            fruits.push(fruit)
-        }
-    }
-}(['🍎', '🍐', '🍊']))
-
-module.add('🍏')
-```
-{:.next}
-
-## Непонятности функций
-
-- ...Замыкания
-- ...Свойство prototype
-- ...Контекст — this
-- ...Тегированные шаблоны
-
-## Замыкания
-{:.section}
-
-## Замыкание (лексическая область видимости)
-
-- ...Это функция + её область видимости
-- ...Создаётся в момент вызова функции
-- ...Поиск переменной идёт по цепочке
-
-```js
-function createClosure () {
-    // Видишь замыкание?
-    // Нет? А оно есть!
-}
-
-createClosure() 🤔
-```
-{:.next}
-
-## Делаем замыкание видимым
-
-```js
-function createClosure (value = '🚀') {
-    return () => {
-        console.log(value)
-    }
-}
-
-const fn = createClosure()
-fn() // 🚀
-```
-{:.next style="float:left;" }
-
-```js
-// где-то внутри движка
-const fn = {
-    [[Call]]: '......',
-    [[Scope]]: {
-        value: '🚀'
-    }
-}
-```
-{:.next .image-right}
-
-## Замыкание в действии
-
-```js
-const createCounter = tag =>
-    count => ({
-        inc () { ++count },
-        dec () { --count },
-        val () {
-            console.log(`${tag}: ${count}`)
-        }
-    })
-
-const pomoCounter = createCounter('🍅')
-```
-{:.next style="float:left; width: 700px;" }
-
-```js
-const first = pomoCounter(0)
-first.inc()
-first.val() // 🍅: 1
-
-const second = pomoCounter(4)
-second.dec()
-second.val() // 🍅: 3
-```
-{:.next .image-right style="width: 700px;" }
-
-
-
-## Свойство prototype
-{:.section}
-
-## Двойственная природа функций
-{:.fullscreen}
-![](pictures/functions-nature.jpg)
-<figure markdown="1">
-Двойственная природа функций
-</figure>
-{:style="width: 900px;"}
-
-
-## Функция-конструктор
-
-- ...Название с <b>Большой Буквы</b> (просто соглашение)
-- ...Вызывается <b>только</b> вместе с <b>new</b>
-- ...Обращается к <b>this</b>
-- ...Использует свойство <b>prototype</b>
-
-## Оператор new
-
-- ...Создает новый объект
-- ...Назначает его в качестве this
-- ...Выставляет [[Prototype]]
-
-
-## Оператор new в действии
-
-```js
-function Language (name) {
-    this.name = name
-}
-```
-
-```js
-new Language('JavaScript') // { name: "JavaScript" }
-```
-{:.next}
-
-```js
-function Language (name) {
-    // this = {}
-    // this.[[Prototype]] = Language.prototype
-    this.name = name
-    // return this
-}
-```
-{:.next}
-
-
-## Связь prototype и [[Prototype]]
-
-...[[Prototype]] указывает на объект в свойстве prototype
-
-```js
-const proto = {apple: '🍏'}
-```
-{:.next}
-
-```js
-function Class () {}
-Class.prototype = proto
-```
-{:.next}
-
-```js
-const object = new Class()
-object.apple // 🍏
-```
-{:.next}
-
-```js
-object.__proto__ === Class.prototype // true
-```
-{:.next}
-
-
-## Потеря prototype
-
-...[[Prototype]] выставляется в момент вызова new
-
-```js
-function Class () {}
-Class.prototype = {}
-
-const object = new Class()
-object.apple // undefined
-```
-{:.next}
-
-```js
-Class.prototype = {apple: '🍏'}
-object.apple // undefined
-```
-{:.next}
-
-```js
-object.__proto__ === Class.prototype // false
-```
-{:.next}
-
-## Защита от вызова без new
-
-```js
-function Constructor () {
-    if (typeof new.target === 'undefined') {
-        throw new Error('Следует вызывать только с new!')
+const NullInstance = {
+    [Symbol.hasInstance](x) {
+        return x === null
     }
 }
 ```
 {:.next}
 
 ```js
-function Constructor () {
-    if (typeof new.target === 'undefined') {
-        return new Constructor()
-    }
-}
+null instanceof NullInstance // true
 ```
 {:.next}
 
-## Свойство constructor
+### ...[Examples of Well-Known Symbols](https://exploringjs.com/js/book/ch_symbols.html#publicly-known-symbols)
 
-- ...Ссылка на конструктор
-- ...По-умолчанию, содержится в prototype
-- ...Позволяет получить класс через экземпляр
+## Где может быть полезно?
 
+- ...Разработка библиотек
+- ...Модификация поведения через Well-Known
+- ...Разные необычные сценарии использования
 
-## Свойство constructor
+### ...[Use cases for symbols](https://exploringjs.com/js/book/ch_symbols.html#use-cases-for-symbols)
 
-```js
-function Class () {}
-Class.prototype // {constructor: ƒ}
-```
 
-```js
-Class.prototype.constructor === Class // true
-```
-{:.next}
-
-```js
-const first = new Class()
-const second = new first.constructor
-```
-{:.next}
-
-```js
-first.__proto__ === second.__proto__ // true
-```
-{:.next}
-
-## Потеря constructor
-
-```js
-function Class () {}
-```
-
-```js
-Class.prototype = { getValue: function () {} }
-```
-{:.next}
-
-```js
-Class.prototype.getValue = function () {}
-```
-{:.next}
-
-```js
-Class.prototype = {
-    constructor: Class,
-    getValue: function () {}
-}
-```
-{:.next}
-
-```js
-Object.defineProperty(Class.prototype, 'constructor', {..., enumerable: false})
-```
-{:.next}
-
-
-## ООП в JavaScript
-
-- ...Прототипное наследование — это 🔥
-- ...ООП через прототипы — это 😔
-- ...Поэтому — используйте классы 🚀
-
-
-## Свойства и методы классов
-
-```js
-class ES6Class {
-    public = null
-    #private = null
-
-    constructor (value) { this.#private = value }
-
-    print () { this.#format(this.public, this.#private) }
-    #format (...values) { console.log(...values) }
-}
-```
-{:.next}
-
-
-```js
-const instance = new ES6Class('🍏')
-instance.public = 'This is'
-instance.print() // "This is 🍏"
-```
-{:.next}
-
-## Статические свойства и методы
-
-```js
-class ES6Class {
-    static value = '🍎'
-    static getValue () { console.log(this.value) }
-
-    constructor (value) { this.value = value }
-
-    getValue() { console.log(this.value) }
-}
-```
-{:.next}
-
-```js
-const instance = new ES6Class('🍏')
-```
-{:.next}
-
-```js
-ES6Class.getValue() // 🍎
-instance.getValue() // 🍏
-```
-{:.next}
-
-## Наследование
-
-
-```js
-class Base {
-    constructor (value) { this.value = value }
-    getValue () { return this.value }
-}
-```
-{:.next}
-
-```js
-class ES6Class extends Base {
-    constructor (value) { super(value) }
-    getValue () { console.log('👉', super.getValue()) }
-}
-```
-{:.next}
-
-```js
-const instanсe = new ES6Class(42)
-instanсe.getValue() // "👉 42"
-```
-{:.next}
-
-## Особенности классов
-
-- ...Вызываются только вместе с new
-- ...Не всплывают, в отличие от функций
-
-```js
-class ES6Class {}
-
-ES6Class() // TypeError: ... cannot be invoked without 'new'
-```
-{:.next}
-
-```js
-class Main extends Base {} // ReferenceError: ... before initialization
-
-class Base {}
-```
-{:.next}
-
-
-## Классы ES6 — это синтаксический сахар
-
-```js
-class SyntaxSugar extends Base {}
-```
-{:.next}
-
-```js
-function Base () {}
-
-Base.prototype.getValue = function () {
-    console.log(this.value)
-}
-```
-{:.next}
-
-```js
-SyntaxSugar.prototype.value = '🍰'
-```
-{:.next}
-
-```js
-new SyntaxSugar().getValue() // "🍰
-```
-{:.next}
-
-```js
-typeof SyntaxSugar // "function"
-```
-{:.next}
-
-
-## Примеси (mixins)
-
-```js
-const base = {
-    getFruit () {
-        return this.fruit
-    }
-}
-
-const object = { fruit: '🍎' }
-```
-{:.next}
-
-```js
-Object.assign(object, base)
-```
-{:.next}
-
-```js
-object.getFruit() // "🍎"
-```
-{:.next}
-
-
-## Контекст — this
-{:.section}
-
-
-## Контекст — связывание ф-ции и объекта
-
-- ...По-умолчанию
-- ...Неявное
-- ...Явное
-- ...Через new
-
-
-## Связывание по-умолчанию
-
-...this — глобальный объект или undefined
-
-```js
-globalThis.value = '🔥'
-
-function something () {
-    return this.value
-}
-```
-{:.next}
-
-```js
-something() // 🔥
-```
-{:.next}
-
-```js
-'use strict'
-something() // TypeError: Cannot read property 'value' of undefined
-```
-{:.next}
-
-## globalThis
-
-...Универсальный глобальный контекст
-
-```js
-// браузер
-globalThis === window // true
-```
-{:.next}
-
-```js
-// node
-globalThis === global // true
-```
-{:.next}
-
-### ...[Есть особенности в браузерах из-за соображений безопасности](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/globalThis)
-
-
-## Неявное связывание
-
-...Одновременное обращение и вызов
-
-```js
-const object = {
-    value: '🔥',
-    getValue() { return this.value }
-}
-```
-{:.next}
-
-```js
-object.getValue() // 🔥
-```
-{:.next}
-
-```js
-// потеря this
-const method = object.getValue
-method() // undefined
-```
-{:.next}
-
-
-## Явное связывание
-
-Методы: call, apply, bind
-
-```js
-const object = {
-    value: '🔥',
-    getValue() { return this.value }
-}
-```
-{:.next}
-
-```js
-const method = object.getValue
-method.call(object) // 🔥
-```
-{:.next}
-
-## Различия call, apply и bind
-
-```js
-const object = {
-    init(text, emoji) {
-        this.text = text
-        this.emoji = emoji
-    }
-}
-```
-
-```js
-const method = object.init
-```
-{:.next}
-
-```js
-method.call(object, 'fire', '🔥')
-method.apply(object, ['fire', '🔥'])
-method.bind(object)('fire', '🔥')
-```
-{:.next}
-
-## Приоритет связываний
-
-- ...Через new
-- ...Явное
-- ...Неявное
-- ...По-умолчанию
-
-## Разный приоритет
-
-```js
-const object = {
-    value: '🔥',
-    method: function () {
-        console.log(this === object, this.value)
-    }
-}
-
-object.method() // true 🔥
-new object.method() // false undefined
-```
-{:.next}
-
-
-## Два варианта работы с контекстом
-
-- ...Понимать, где он теряется и связывать через `bind`
-- ...Лексическая область видимости: `замыкание` или `() => {}`
-
-## Потеря контекста
-
-```js
-const object = {
-    value: '🔥',
-    logWithTimeout() {
-        function callback () {
-            console.log(this.value)
-        }
-        setTimeout(callback, 200)
-    }
-}
-
-object.logWithTimeout() // undefined
-```
-
-## Связывание через bind
-
-```js
-const object = {
-    value: '🔥',
-    logWithTimeout() {
-        function callback () {
-            console.log(this.value)
-        }
-        setTimeout(callback.bind(this), 200)
-    }
-}
-
-object.logWithTimeout() // 🔥
-```
-
-## Сохранение в замыкании
-
-```js
-const object = {
-    value: '🔥',
-    logWithTimeout() {
-        const that = this
-        const callback = function () {
-            console.log(that.value)
-        }
-        setTimeout(callback, 200)
-    }
-}
-
-object.logWithTimeout() // 🔥
-```
-
-## Стрелочная функция
-
-```js
-const object = {
-    value: '🔥',
-    logWithTimeout() {
-        const callback = () => {
-            console.log(this.value)
-        }
-        setTimeout(callback, 200)
-    }
-}
-
-object.logWithTimeout() // 🔥
-```
-
-## Тегированные шаблоны
+## <b>Шаблонные строки<br>Тегированные шаблоны</b>
 {:.section}
 
 
@@ -1531,6 +189,8 @@ const style = `width: ${size}px;`
 console.log(style) // "width: 42px;"
 ```
 {:.next}
+
+### [Template literals (Template strings)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
 
 
 ## Тегированные шаблоны
@@ -1559,9 +219,456 @@ String.raw`\n` // "\\n"
 ```
 {:.next}
 
+### [Template literals (Template strings)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals)
+
+## Где может быть полезно?
+
+...Шаблонные строки выполняют простую подстановку
+
+...Тегированные шаблоны выполняют произвольное форматирование
+
+...Могут быть полезны для:
+- ...Форматирование значений (преобразование, экранирование и т.д.)
+- ...Написания библиотек для работы с Markdown, CSS, SQL и т.д.
+
+### ...[Advanced String Manipulation with Tagged Templates In JavaScript](https://claritydev.net/blog/javascript-advanced-string-manipulation-tagged-templates)
 
 
-## <b>Коллекции</b>
+## <b>Proxy и Reflection</b>
+{:.section}
+
+## Proxy и Reflection
+
+- ...Proxy — возможность перехватить операцию JavaScript
+- ...Reflection — поведение по-умолчанию для перехваченной операции
+
+```js
+const object = {}
+const proxy = new Proxy(object, {
+    set (trapTarget, key, value, receiver) {
+        return Reflect.set(trapTarget, key, value, receiver)
+    }
+}
+
+proxy.apple = '🍎'
+```
+{:.next}
+
+### [Proxy и Reflect](https://learn.javascript.ru/proxy)
+
+## Где может быть полезно?
+
+...Можно перехватить:
+- ...Чтение, запись, удаление свойств
+- ...Вызов ф-ции, вызов new
+- ...и т.д.
+
+...Позволяет реализовать:
+- ...Перегрузку операций
+- ...Валидацию, кеширование
+- ...и т.д.
+
+### ...[A practical guide to Javascript Proxy](https://dev.to/tombarr/a-practical-guide-to-javascript-proxy-4cpa)
+
+## <b>Итераторы и Генераторы</b>
+{:.section}
+
+
+## Терминология
+
+...Генератор — объект, который последовательно вычисляет свои значения
+
+...Итератор — интерфейс для доступа к элементам коллекции
+
+...В JavaScript:
+- ...Генераторная ф-ция возвращает генератор
+- ...Генератор поддерживает протоколы Iterable и Iterator
+- ...Iterable — реализация функции через `Symbol.iterator`
+- ...Iterator — реализация объекта с методами `next`, `return`, `throw`
+
+### [Iterable & Iterator Interfaces](https://262.ecma-international.org/#sec-common-iteration-interfaces)
+
+## Генератор — это корутина (сопрограмма)
+
+...**Cooperative concurrently executing routines**
+
+...Корутина — это функция, которая:
+- ...приостанавливает работу
+- ...запоминает текущее состояние
+- ...имеет несколько точек входа и выхода
+
+### [Generator (computer programming)](https://en.wikipedia.org/wiki/Generator_(computer_programming))
+
+## Протоколы Iterable и Iterator
+
+```js
+const iterator = ['🍎', '🍏'][Symbol.iterator]()
+```
+{:.next}
+
+```js
+iterator.next() // {value: "🍎", done: false}
+iterator.next() // {value: "🍏", done: false}
+```
+{:.next}
+
+```js
+iterator.next() // {value: undefined, done: true}
+iterator.next() // {value: undefined, done: true}
+```
+{:.next}
+
+### [Iteration protocols](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Iteration_protocols)
+
+## Генераторная функция
+
+...Возвращает объект с поддержкой протоколов Iterable и Iterator
+
+```js
+function* generator () {
+    yield '🍎'
+    yield '🍏'
+}
+```
+{:.next}
+
+```js
+const iterator = generator()
+```
+{:.next}
+
+```js
+iterator.next() // {value: "🍎", done: false}
+iterator.next() // {value: "🍏", done: false}
+iterator.next() // {value: undefined, done: true}
+```
+{:.next}
+
+
+## return завершает генератор
+
+```js
+function* generatorA () {
+    yield '🍏'
+}
+```
+{:.next}
+
+```js
+iteratorA.next() // { value: "🍏", done: false }
+iteratorA.next() // { value: undefined, done: true }
+```
+{:.next}
+
+```js
+function* generatorB () {
+    return '🍏'
+}
+```
+{:.next}
+
+```js
+iteratorB.next() // { value: "🍏", done: true }
+```
+{:.next}
+
+## Делегирование генератора
+
+Генераторы можно делегировать через <b>yield*</b>
+
+```js
+function* fruits () {
+    yield* apples()
+    yield '🍋'
+}
+
+const iterator = fruits()
+iterator.next() // { value: "🍎", done: false }
+iterator.next() // { value: "🍏", done: false }
+iterator.next() // { value: "🍋", done: false }
+```
+{:style="float:left; width: 600px;"}
+
+```js
+function* apples () {
+    yield '🍎'
+    yield '🍏'
+}
+```
+{:.image-right}
+
+## Делегирование генератора и return
+
+При делегирование результат <b>return</b> вернется в <b>yield*</b>
+
+```js
+function* fruits () {
+    const result = yield* apples()
+    yield result
+}
+
+const iterator = fruits()
+iterator.next() // { value: "🍎", done: false }
+iterator.next() // { value: "🍏", done: false }
+iterator.next() // { value: undefined, done: true }
+```
+{:style="float:left; width: 600px;"}
+
+```js
+function* apples () {
+    yield '🍎'
+    return '🍏'
+}
+```
+{:.image-right}
+
+
+## for-of
+
+...Ожидает, что объект реализует Iterable
+
+
+```js
+function* generator () {
+    yield '🍎'
+    yield '🍏'
+}
+
+const iterator = generator()
+```
+{:.next}
+
+```js
+for (const apple of iterator) {
+    console.log(apple) // "🍎" "🍏"
+}
+```
+{:.next}
+
+### [for...of](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for...of)
+
+
+## Использует символы, вместо кодовых единиц
+
+...Полная поддержка <b>Unicode</b>
+
+```js
+const string = '🎉'
+```
+{:.next}
+
+```js
+for (let i = 0; i < string.length; ++i) {
+    console.log(string[i]) // что-то не то, причем два раза...
+}
+```
+{:.next}
+
+```js
+for (const char of string) {
+    console.log(char) // "🎉"
+}
+```
+{:.next}
+
+### [Обработка Unicode в String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Symbol.iterator)
+
+
+## Symbol.iterator
+
+```js
+const object = {
+    *[Symbol.iterator] () {
+        yield '🍎'
+        yield '🍏'
+    }
+}
+```
+{:.next}
+
+```js
+for (const apple of object) {
+    console.log(apple) // "🍎" "🍏"
+}
+```
+{:.next}
+
+## Symbol.asyncIterator
+
+```js
+const object = {
+    async *[Symbol.asyncIterator] () {
+        yield '🍎'
+        yield '🍏'
+    }
+}
+
+```
+{:.next}
+
+```js
+for await (const apple of object) {
+    console.log(apple) // "🍎" "🍏"
+}
+```
+{:.next}
+
+## Symbol.iterator у встроенных объектов
+
+...<b>Symbol.iterator</b> уже реализован во <b>встроенных</b> объектах
+
+- ...`String`
+- ...`Array`, `Set`, `Map`
+- ...Псевдо массивы `arguments`, `HTMLCollection` и т.д.
+
+```js
+const nodeList = document.querySelectorAll('div')
+
+for (const node of nodeList) {
+    console.log(node)
+}
+```
+{:.next}
+
+## keys, values, entries для коллекций
+
+- ...`Object.keys`, `Object.values`, `Object.entries` — вернут <b>массив</b>
+- ...Методы коллекций `keys`, `values`, `entries` — вернут <b>итератор</b>
+
+```js
+Object.keys({'🍎': 'red'}) // [ "🍎" ]
+```
+{:.next}
+
+```js
+const map = new Map([ ['🍎', 'red'] ])
+map.keys() // MapIterator {"🍎"}
+```
+{:.next}
+
+
+## Как превратить итератор в массив?
+
+```js
+const set = new Set([4, 8, 15, 16])
+```
+{:.next}
+
+```js
+const array = [...set]
+```
+{:.next}
+
+```js
+const array = Array.from(set)
+```
+{:.next}
+
+
+## Итератор по-умолчанию
+
+- ...<b>Array</b>, <b>Set</b> — `values`
+- ...<b>Map</b> — `entries`
+
+```js
+for (const [key, value] of map.entries()) {
+    // ...
+}
+```
+{:.next}
+
+```js
+for (const [key, value] of map) {
+    // ...
+}
+```
+{:.next}
+
+
+## Взаимодействие через next
+
+```js
+function* generator () {
+    const value = yield '🍎'
+    yield 42 + value
+}
+```
+{:.next}
+
+```js
+const iterator = generator()
+```
+{:.next}
+
+```js
+iterator.next()   // { value: "🍎", done: false }
+iterator.next(17) // { value: 59, done: false }
+iterator.next()   // { value: undefined, done: true }
+```
+{:.next}
+
+## Взаимодействие через throw
+
+```js
+// где-то в генераторе
+try {
+    choice = yield "Select fruit" // "🍎"
+} catch (e) {
+    choice = e
+}
+yield choice
+```
+{:.next}
+
+```js
+iterator.next() // { value: "Select fruit", done: false }
+iterator.next('🍎') // { value: "🍎", done: false }
+```
+{:.next}
+
+## Взаимодействие через throw
+
+```js
+// где-то в генераторе
+try {
+    choice = yield "Select fruit"
+} catch (e) {
+    choice = e // "🍏"
+}
+yield choice
+```
+
+```js
+iterator.next() // { value: "Select fruit", done: false }
+iterator.throw('🍏') // { value: "🍏", done: false }
+```
+
+
+## Взаимодействие через return
+
+```js
+function* generator () {
+    yield '🍎'
+}
+
+const iterator = generator()
+```
+{:.next}
+
+```js
+iterator.return('🍏') // { value: "🍏", done: true }
+```
+{:.next}
+
+## Где может быть полезно?
+
+- ...Работа с асинхронностью
+- ...Ленивые вычисления, загрузка, пагинация
+- ...Создание бесконечных последовательностей
+- ...Навигация по произвольным коллекциям
+
+
+## <b>Массивы</b>
 {:.section}
 
 
@@ -1576,22 +683,23 @@ Array.isArray([3, 14, 15]) // true
 
 ```js
 const HTMLCollection = document.querySelectorAll('div')
+```
+{:.next}
+
+```js
 Array.isArray(HTMLCollection) // false
 ```
 {:.next}
 
+### ...[instanceof vs. Array.isArray()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray#instanceof_vs._array.isarray)
+
+
 ## Array.from
 
-...Создать настоящий массив из <b>псевдомассива</b>
+...Создать настоящий массив из <b>псевдо массива</b>
 
 ```js
 const HTMLCollection = document.querySelectorAll('div')
-```
-{:.next}
-
-```js
-// кража метода
-[].slice.call(HTMLCollection, 0, 3) // [div, div, div]
 ```
 {:.next}
 
@@ -1600,6 +708,33 @@ Array.from(HTMLCollection).slice(0, 3) // [div, div, div]
 ```
 {:.next}
 
+```js
+Array.from([3, 14, 15], (x) => x + x) // [6, 28, 30]
+```
+{:.next}
+
+### [Array.from()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/from)
+
+
+## Array.fromAsync
+
+```js
+async function* generator () {
+    yield Promise.resolve('🍏')
+}
+
+const asyncIterator = generator()
+```
+{:.next}
+
+```js
+Array.fromAsync(asyncIterator).then((result) => {
+    console.log(result) // ['🍏']
+})
+```
+{:.next}
+
+### [Array.fromAsync()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/fromAsync)
 
 ## Array.of
 
@@ -1623,7 +758,35 @@ Array(16).fill().map(_ => <Skeleton />)
 ```
 {:.next}
 
-## Удобные методы массивов
+### [Array.of()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/of)
+
+
+## Доступ к элементам
+
+```js
+const array = [4, 8, 15, 16, 23, 42]
+```
+{:.next}
+
+```js
+array[4] // 23
+```
+{:.next}
+
+```js
+array[array.length - 1] // 42
+```
+{:.next}
+
+```js
+[4, 8, 15, 16, 23, 42].at(-1) // 42
+```
+{:.next}
+
+### [Array.prototype.at()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/at)
+
+
+## Поиск в массиве
 
 ```js
 ['🍎', '🍐', '🍊'].includes('🍎') // true
@@ -1641,6 +804,18 @@ Array(16).fill().map(_ => <Skeleton />)
 {:.next}
 
 ```js
+['🍎', '🍐', '🍊'].findLast(x => x === '🍊') // "🍊"
+```
+{:.next}
+
+```js
+['🍎', '🍐', '🍊'].findLastIndex(x => x === '🍊') // 2
+```
+{:.next}
+
+## flat и flatMap
+
+```js
 [4, [8, [15, 16]], [23], 42].flat() // [4, 8, Array(2), 23, 42]
 ```
 {:.next}
@@ -1651,44 +826,36 @@ Array(16).fill().map(_ => <Skeleton />)
 {:.next}
 
 ```js
+// сперва map, затем flat
 [4, 8, 15, 16, 23, 42].flatMap(x => [x]) // [4, 8, 15, 16, 23, 42]
 ```
 {:.next}
 
-```js
-[4, 8, 15, 16, 23, 42].at(-1) // 42
-```
-{:.next}
 
-## Проверка на null и undefined
+## Копирующие методы
+
+...toSorted, toReversed, toSpliced, with
 
 ```js
-const object = { value: 0 }
-```
-{:.next}
+const array = ['2', '3', '1']
 
-```js
-object.value || 'default' // "default"
+array.toSorted() // ['1', '2', '3']
+array.with(0, '🍏') // ['🍏', '3', '1']
 ```
 {:.next}
 
 ```js
-// Оператор нулевого слияния (??)
-object.value ?? 'default' // 0
+console.log(array) // ['2', '3', '1']
 ```
 {:.next}
 
-```js
-// Опциональная цепочка (?.)
-object?.data?.value
-object?.data?.[value]
-object?.method?.()
-```
-{:.next}
+### [Копирующие методы массивов](https://proghunter.ru/articles/new-array-methods-when-copying-to-javascript-in-ecmascript-2023)<br>[Copying methods and mutating methods](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array#copying_methods_and_mutating_methods)
+
+## <b>Множества и словари</b>
+{:.section}
+
 
 ## Множества и словари до ES6
-
-...У обычных объектов ключом можем быть только <b>строка</b>
 
 ```js
 const set = {}
@@ -1712,8 +879,6 @@ map // {[object Object]: "🍊"}
 {:.next.image-right}
 
 ## Set и Map
-
-...Ключом можем быть любой <b>примитив</b> или <b>ссылка</b>
 
 ```js
 const set = new Set()
@@ -1742,7 +907,7 @@ map.get(orange) // "🍊"
 
 ## WeakSet и WeakMap
 
-...В качестве ключей выступают только <b>ссылки</b>
+...В качестве ключей выступают только <b>ссылки</b> или <b>символы</b>
 
 ```js
 const map = new WeakMap()
@@ -1763,6 +928,8 @@ elem = null
 // в этой точке ассоциативный массив со слабыми ссылками оказывается пустым
 ```
 {:.next}
+
+### [Use cases for WeekSet and WeekMap](https://stackoverflow.com/a/29416340)
 
 ## Порядок свойств
 
@@ -1796,193 +963,249 @@ console.log(...set.keys())
 {:.next}
 {:.image-right}
 
+### [Keyed Collections](https://262.ecma-international.org/#sec-structured-data)
 
-## <b>Итераторы и Генераторы</b>
+## Методы для операций на множествах
+
+- intersection
+- union
+- difference
+- symmetricDifference
+- isSubsetOf
+- isSupersetOf
+- isDisjointFrom
+{:.next style="float:left; width: 600px;"}
+
+```js
+const a = new Set(['🍏', '🍎', '🍐'])
+const b = new Set(['🍐', '🍋'])
+
+a.union(b)
+// Set(4) {'🍏', '🍎', '🍐', '🍋'}
+```
+{:.next .image-right}
+
+### [The JavaScript Set methods](https://web.dev/blog/set-methods)
+
+## <b>Классы</b>
+{:.section}
+
+## Приватные свойства и методы
+
+```js
+class Awesome {
+    publicField = null
+    #privateField = null
+
+    constructor (a, b) {
+        this.publicField = a
+        this.#privateField = b
+    }
+
+    #privateMethod () {}
+    publicMethod () {}
+}
+```
+{:.next}
+
+## Статические свойства и методы
+
+```js
+class Awesome {
+    static value = '🍎'
+    static printValue () { console.log(this.value) }
+
+    constructor (value) { this.value = value }
+    printValue () { console.log(this.value) }
+}
+```
+{:.next}
+
+```js
+const instance = new Awesome('🍏')
+Awesome.printValue() // 🍎
+instance.printValue() // 🍏
+```
+{:.next}
+
+## Блок статической инициализации
+
+```js
+class Awesome {
+    static redApple
+    static greenApple
+
+    static {
+        this.redApple = '🍎'
+        this.greenApple = '🍏'
+    }
+}
+```
+{:.next}
+
+
+## <b>Кое-что ещё</b>
 {:.section}
 
 
-## Философия
-
-- ...Итератор — <b>интерфейс</b> с методом <b>next</b> и признаком <b>done</b>
-- ...Генератор — <b>подход</b>, когда вычисляется только следующий элемент
-
-## Итератор в JavaScript
-
-...Это штука с методом <b>next</b>, которая возвращает `{ value, done }`
+## Числовой разделитель и BigInt
 
 ```js
-const iterator = ['🍎', '🍏'][Symbol.iterator]()
+const million = 1_000_000
 ```
 {:.next}
 
 ```js
-iterator.next() // {value: "🍎", done: false}
+BigInt('100500') // 100500n
+
+typeof 100500n // 'bigint'
+
+100 + 100n // TypeError: Cannot mix BigInt and other types
+```
+{:.next}
+
+### ...[BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt)
+
+## isNaN vs Number.isNaN
+
+```js
+isNaN(NaN) // true
 ```
 {:.next}
 
 ```js
-iterator.next() // {value: "🍏", done: false}
-```
-{:.next}
-```js
-iterator.next() // {value: undefined, done: true}
-```
-{:.next}
-```js
-iterator.next() // {value: undefined, done: true}
-```
-{:.next}
-
-## Генератор в JavaScript
-
-...Штука, которая <b>возвращает итератор</b>
-
-```js
-function* generator () {
-    yield '🍎'
-    yield '🍏'
-}
+isNaN('I am not a NaN') // true
 ```
 {:.next}
 
 ```js
-const iterator = generator()
+Number.isNaN('I am not a NaN') // false
 ```
 {:.next}
 
 ```js
-iterator.next() // {value: "🍎", done: false}
-iterator.next() // {value: "🍏", done: false}
-iterator.next() // {value: undefined, done: true}
+Number.parseInt === parseInt // true
 ```
 {:.next}
 
-## for-of
+### [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number)
 
-...Синтаксический сахар для вызова интерфейса итератора
-
-```js
-for (const apple of iterator) {
-    console.log(apple) // "🍎" "🍏"
-}
-```
-{:.next}
-
-## Интерфейс итератора — Symbol.iterator
-
-...<b>Symbol.iterator</b> позволяет определить интерфейс итератора
+## Сравнение через Object.is
 
 ```js
-const object = {
-    *[Symbol.iterator] () {
-        yield '🍎'
-        yield '🍏'
-    }
-}
+NaN === NaN // false
 ```
 {:.next}
 
 ```js
-for (const apple of object) {
-    console.log(apple) // "🍎" "🍏"
-}
-```
-{:.next}
-
-## Symbol.asyncIterator — async интерфейс
-
-```js
-const object = {
-    async *[Symbol.asyncIterator] () {
-        yield '🍎'
-        yield '🍏'
-    }
-}
-
+Object.is(NaN, NaN) // true
 ```
 {:.next}
 
 ```js
-for await (const apple of object) {
-    console.log(apple) // "🍎" "🍏"
-}
+Object.is(+0, -0) // false
 ```
 {:.next}
 
-## Symbol.iterator из коробки
-
-...<b>Symbol.iterator</b> уже реализован во <b>встроенных</b> объектах
-
-- ...`String`
-- ...`Array`, `Set`, `Map`
-- ...Псевдомассивах `arguments`, `HTMLCollection` и т.д.
+## Обработка null и undefined
 
 ```js
-const nodeList = document.querySelectorAll('div')
-
-for (const node of nodeList) {
-    console.log(node)
-}
-```
-{:.next}
-
-## Использует символы, вместо кодовых единиц
-
-...Полная поддержка <b>Unicode</b>
-
-```js
-const string = '🎉'
+const object = { value: 0 }
 ```
 {:.next}
 
 ```js
-for (let i = 0; i < string.length; ++i) {
-    console.log(string[i]) // что-то не то, причем два раза...
-}
+object.value || 'default' // "default"
 ```
 {:.next}
 
 ```js
-for (const char of string) {
-    console.log(char) // "🎉"
-}
-```
-{:.next}
-
-## keys, values, entries для коллекций
-
-- ...`Object.keys`, `Object.values`, `Object.entries` — вернут <b>массив</b>
-- ...Методы коллекций `keys`, `values`, `entries` — вернут <b>итератор</b>
-
-```js
-Object.keys({'🍎': 'red'}) // [ "🍎" ]
+// Операторы нулевого слияния и присваивания
+object.value ?? 'default'
+object.value ??= 'default'
 ```
 {:.next}
 
 ```js
-const map = new Map([ ['🍎', 'red'] ])
-map.keys() // MapIterator {"🍎"}
+// Опциональная цепочка (?.)
+object?.data?.value
+object?.data?.[value]
+object?.method?.()
 ```
 {:.next}
 
-## Итератор по-умолчанию
 
-- ...<b>Array</b>, <b>Set</b> — `values`
-- ...<b>Map</b> — `entries`
+## replaceAll и matchAll
 
 ```js
-for (const [key, value] of map.entries()) {
-    // ...
-}
+'a a a'.replace('a', 'b') // 'b a a'
 ```
 {:.next}
 
 ```js
-for (const [key, value] of map) {
-    // ...
-}
+'a a a'.replace(/a/g, 'b') // 'b b b'
 ```
 {:.next}
+
+```js
+'a a a'.replaceAll('a', 'b') // 'b b b'
+```
+{:.next}
+
+```js
+const html = '<h1>Something</h1>'
+const regex = /<(.*?)>/g
+```
+{:.next}
+
+```js
+html.matchAll(regex) // RegExpStringIterator
+Array.from(html.matchAll(regex)) // [Array(2), Array(2)]
+```
+{:.next}
+
+### ...[replace и replaceAll](https://exploringjs.com/js/book/ch_regexps.html#replace-replaceAll) / [match и matchAll](https://learn.javascript.ru/regexp-methods#str-matchall-regexp)
+
+## globalThis
+
+...Универсальный глобальный контекст
+
+```js
+// браузер
+globalThis === window // true
+```
+{:.next}
+
+```js
+// воркер
+globalThis === self // true
+```
+{:.next}
+
+```js
+// node
+globalThis === global // true
+```
+{:.next}
+
+### ...[In browsers, globalThis does not point directly to the global object](https://exploringjs.com/js/book/ch_variables-assignment.html#globalThis)
+
+
+## structuredClone
+
+```js
+const object = { this: { is: { nested: 'data' } } }
+
+const deepCopy = structuredClone(object)
+```
+{:.next}
+
+...Ограничения:
+- ...Ф-ции
+- ...Прототипы
+- ...DOM узлы и т.д.
+
+### [Глубокое копирование в JavaScript](https://web.dev/articles/structured-clone)
 
 
 ## Object.fromEntries
@@ -2006,626 +1229,48 @@ Object.fromEntries(map) // {red: "🍎", green: "🍏"}
 {:.next}
 
 
-## Как превратить итератор в массив?
+## Object.groupBy и Map.groupBy
 
 ```js
-const set = new Set([4, 8, 15, 16])
-```
-{:.next}
-```js
-const array = [...set]
-```
-{:.next}
-
-
-## Итератор is Корутина
-{:.blockquote}
-
-## Итератор — это корутина (сопрограмма)
-
-...**Cooperative concurrently executing routines**
-
-...Корутина — это функция, которая:
-- ...приостанавливает работу
-- ...запоминает текущее состояние
-- ...имеет несколько точек входа и выхода
-
-## Общение итератора с внешним миром
-
-...Через <b>аргумент</b> в методе <b>next</b>
-
-```js
-function* generator () {
-    const value = yield '🍎'
-    yield 42 + value
-}
+const inventory = [
+    { name: "🍏", type: "fruit", quantity: 4 },
+    { name: "🍎", type: "fruit", quantity: 5 },
+    { name: "🥦", type: "vegetables", quantity: 7 },
+]
 ```
 {:.next}
 
 ```js
-const iterator = generator()
+Object.groupBy(inventory, ({ type }) => type)
+// { fruit: Array(2), vegetables: Array(1) }
 ```
 {:.next}
 
 ```js
-iterator.next()   // { value: "🍎", done: false }
-iterator.next(17) // { value: 59, done: false }
-iterator.next()   // { value: undefined, done: true }
+Map.groupBy(inventory, ({ type }) => type)
+// Map(2) { 'fruit' => Array(2), 'vegetables' => Array(1) }
 ```
 {:.next}
 
-## Общение итератора с внешним миром
-
-...Через <b>аргумент</b> в методе <b>throw</b>
-
-```js
-// где-то в генераторе
-try {
-    choice = yield "It's time to choose..." // "🍎"
-} catch (e) {
-    choice = e
-}
-yield choice
-```
-{:.next}
-
-```js
-// текущая реальность
-iterator.next() // { value: "It's time ...", done: false }
-iterator.next('🍎') // { value: "🍎", done: false }
-```
-{:.next}
-
-## Общение итератора с внешним миром
-
-Через <b>аргумент</b> в методе <b>throw</b>
-
-```js
-// где-то в генераторе
-try {
-    choice = yield "It's time to choose..."
-} catch (e) {
-    choice = e // "🍏"
-}
-yield choice
-```
-
-```js
-// альтернативная реальность
-iterator.next() // { value: "It's time ...", done: false }
-iterator.throw('🍏') // { value: "🍏", done: false }
-```
-
-## return завершает генератор
-
-```js
-function* generatorA () {
-    yield '🍏'
-}
-```
-{:.next}
-
-```js
-iteratorA.next() // { value: "🍏", done: false }
-iteratorA.next() // { value: undefined, done: true }
-```
-{:.next}
-
-```js
-function* generatorB () {
-    return '🍏'
-}
-```
-{:.next}
-
-```js
-iteratorB.next() // { value: "🍏", done: true }
-```
-{:.next}
-
-## Делегирование генераторов
-
-Генераторы можно делегировать через <b>yield*</b>
-
-```js
-function* fruits () {
-    yield* apples()
-    yield '🍋'
-}
-
-const iterator = fruits()
-iterator.next() // { value: "🍎", done: false }
-iterator.next() // { value: "🍏", done: false }
-iterator.next() // { value: "🍋", done: false }
-```
-{:style="float:left; width: 600px;"}
-
-```js
-function* apples () {
-    yield '🍎'
-    yield '🍏'
-}
-```
-{:.image-right}
-
-## Делегирование генераторов и return
-
-При делегирование результат <b>return</b> вернется в <b>yield*</b>
-
-```js
-function* fruits () {
-    const result = yield* apples()
-    yield result
-}
-
-const iterator = fruits()
-iterator.next() // { value: "🍎", done: false }
-iterator.next() // { value: "🍏", done: false }
-iterator.next() // { value: undefined, done: true }
-```
-{:style="float:left; width: 600px;"}
-
-```js
-function* apples () {
-    yield '🍎'
-    return '🍏'
-}
-```
-{:.image-right}
-
-
-## <b>Вместо заключения</b>
-{:.section}
-
-## Сегодня мы поняли кое-что важное
-
-- ...Типы данных
-- ...Объекты
-- ...Функции
-- ...Коллекции
-- ...Итераторы и генераторы
+### [Object.groupBy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/groupBy) и [Map.groupBy](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/groupBy)
 
 
 ## Что ещё почитать?
 
+- ...[Exploring JavaScript](https://exploringjs.com/js/book/index.html)
+- ...[Симпсон — Вы не знаете JavaScript](https://github.com/getify/You-Dont-Know-JS)
 - ...[Фрисби — JavaScript для профессиональных ... (4-е издание)](https://www.ozon.ru/product/javascript-dlya-professionalnyh-veb-razrabotchikov-4-e-mezhdunarodnoe-izd-frisbi-mett-317133183)
 - ...[Флэнаган — JavaScript. Полное руководство (7-е издание)](https://www.ozon.ru/product/javascript-polnoe-rukovodstvo-flenagan-devid-351996284)
-- ...[Симпсон — Вы не знаете JavaScript](https://github.com/getify/You-Dont-Know-JS)
-
-...Кроме того:
-- ...[JavaScript for impatient programmers](https://exploringjs.com/impatient-js/toc.html)
-- ...[ECMAScript proposals](https://github.com/tc39/proposals/tree/main)
-- ...[JavaScript Utilities in 1LOC](https://1loc.dev/)
 
 
 ## <b>The End</b> 👏
 {:.section}
 
-### Спасибо за внимание 🎉
-
-<!--
-## Модули
-{:.section}
-
-## Модули до начала времен
-
-...Давным давно, были только <b>IIFE</b> и <b>замыкания</b>
-
-```js
-const module = (function (fruits) {
-    function _wash (fruit) { /* тщательно моем фрукт */ }
-    return {
-        addApple: function (apple) {
-            fruits.push(_wash(apple))
-        }
-    }
-}(['🍎', '🍐', '🍊']))
-
-module.addApple('🍏')
-```
-{:.next}
-
-## CommonJS
-
-...Система модулей в <b>NodeJS</b>
-
-```js
-// module.js
-module.exports = {
-    apple: '🍎'
-}
-
-// program.js
-const {apple} = require('./module')
-
-console.log(apple) // "🍎"
-```
-{:.next}
-
-## ES6 модули
-
-- ...Скорее всего, потребуется <b>сборщик</b>
-- ...Совместимы с <b>CommonJS</b>
-- ...Работают в <b>use strict</b>
-- ...Исполняются <b>один раз</b> при импорте
-
-### [Понимание (всех) «модульных» форматов](https://habr.com/ru/post/501198/)
-{:.next}
-
-## export
-
-...Можем экспортировать <b>переменную</b>, <b>функцию</b> или <b>класс</b>
-
-```js
-export const object = {}
-
-export function executable () {}
-
-export class Class {}
-
-export { Apples, Oranges }
-```
-{:.next}
-
-## import
-
-...Можем импортировать <b>часть свойств</b> или <b>весь модуль</b> целиком
-
-```js
-import { useState, useEffect } from 'react'
-
-useState()
-useEffect()
-```
-{:.next}
-
-```js
-import * as React from 'react'
-
-React.useState()
-React.useEffect()
-```
-{:.next}
-
-## as (переименование)
-
-```js
-// внутри модуля
-export apples as oranges
-export { pears as lemons }
-```
-{:.next}
-
-```js
-// внутри модуля
-import { oranges as apples, lemons as pears } from 'module'
-```
-{:.next}
-
-## default
-
-- ...Внутри модуля может быть только <b>один default</b>
-- ...Позволяет экспортировать <b>анонимные</b> объекты
-
-```js
-// внутри модуля
-export default () => { /* ... */ }
-export { something as default }
-```
-{:.next}
-
-```js
-// внутри программы
-import React from 'react'
-import React, { useState, useEffect } from 'react'
-import { default as React, useState, useEffect} from 'react'
-
-```
-{:.next}
-
-## import без привязки
-
-...Выполняется ради <b>побочных эффектов</b>
-
-```js
-// импорт стилей
-import 'style.css'
-```
-{:.next}
-
-```js
-// импорт модулей, изменяющих глобальный объект
-import 'es6-polyfill.js'
-```
-{:.next}
-
-## Реэкспорт зависимостей
-
-...Когда требуется <b>передать дальше</b> часть зависимостей
-
-```js
-export { Component } from './Component'
-```
-{:.next}
-
-## Функция import
-
-...Загрузка модуля в <b>момент исполнения</b> программы
-
-```js
-const promise = import('./bundle.js')
-
-promise
-    .then((bundle) => {
-        const { render } = bundle
-        // ...
-    })
-    .catch((error) => {
-        console.error('Ошибка загрузки модуля')
-    })
-```
-{:.next}
-
-## Преобразование типов
-{:.section}
-
-- ...Как работает?
-- ...Когда срабатывает?
-
-
-## Как работает
-{:.section}
-
-### Часть 2.1
-
-
-## Виды преобразований
-
-- ...ToBoolean
-- ...ToString
-- ...ToNumber
-- ...ToPrimitive
-- ...JSON.stringify
-
-## ToBoolean
-
-```js
-Boolean(something)
-```
-
-- ...Любой объект всегда `true`
-- ...Все остальное тоже `true`, кроме <b>7 ложных значений</b>
-
-## 7 ложных значений
-
-- ...`false`
-- ...`null`
-- ...`undefined`
-- ...`''`
-- ...`0`, `-0`, `NaN`
-
-
-## ToString
-
-```js
-String(something)
-```
-
-- ...Для примитивов добавит <b>"кавычки"</b>
-- ...Для объектов — <b>ToPrimitive</b>
-
-## ToNumber
-
-```js
-Number(something)
-```
-
-- ...`true`/`false` преобразует в `1`/`0`
-- ...Строку <b>попробует</b> конвертировать в число
-- ...Для объектов — <b>ToPrimitive</b>
-
-
-## Преобразование строки в число
-
-- ...<b>Пустая строка</b> — это всегда `0`
-- ...<b>Отбросит</b> пробелы и <b>попробует</b> распознать число
-- ...Если есть хотя бы один <b>неверный</b> символ — вернет `NaN`
-
-```js
-Number(' 42\n') // 42
-Number('42px')  // NaN
-```
-{:.next}
-
-```js
-// parseInt, parseFloat распознаю число до первого лишнего символа
-parseInt('42px') // 42
-```
-{:.next}
-
-
-## Алгоритм ToPrimitive
-
-...Вызывает <b>Symbol.toPrimitive</b>
-
-...Либо использует методы <b>valueOf</b> и <b>toString</b>
-
-- ...Вызвать `valueOf` или `toString`
-- ...Если метод вернул <b>примитив</b>, то <b>подставить</b> его в выражение
-- ...При необходимости <b>преобразовать</b> примитив к другому типу
-- ...Если метод вернул <b>объект</b>, то вызвать <b>другой</b> метод
-- ...Второй метод тоже вернул объект? Ошибка!
-
-## Symbol.toPrimitive
-
-...Метод, который принимает одно из <b>трех</b> значений
-
-```js
-const object = {
-    [Symbol.toPrimitive](hint) {
-        switch (hint) {
-            case 'string': return 'строка'
-            case 'number': return 'число'
-            case 'default': return 'нет предпочтений'
-        }
-    }
-}
-```
-{:.next}
-
-
-## Алгоритм ToPrimitive без Symbol.toPrimitive
-
-```js
-const apple = {
-    valueOf () { return '🍎' },
-    toString () { return {} }
-}
-```
-
-```js
-'Apple: ' + apple // "Apple: 🍎" (valueOf)
-```
-{:.next}
-
-```js
-String(apple) // "🍎" (toString → valueOf)
-```
-{:.next}
-
-
-## JSON.stringify
-
-```js
-// Сигнатура
-JSON.stringify(value, replacer, space)
-```
-
-- ...Попробует вызвать `toJSON`
-- ...Свойства: `function`, `undefined`, `symbol`
-    - ...В объекте удалятся
-    - ...В массиве превратятся в `null`
-- ...`NaN`, `Infinity` тоже превратятся `null`
-- ...Встроенные объекты без `toJSON` превратятся в `{}`
-
-## JSON.parse
-```js
-// Сигнатура
-JSON.parse(value, reviver)
-```
-
-```js
-const string = JSON.stringify({ date: new Date })
-
-JSON.parse(string) // { date: "1997-09-23T12:00:00.000Z" }
-```
-{:.next}
-
-```js
-const dateTimeReviver = (key, value) =>
-    key === 'date' ? Date.parse(value) : value
-```
-{:.next}
-
-```js
-JSON.parse(string, dateTimeReviver) // { date: 875016000000 }
-```
-{:.next}
-
-
-## Когда срабатывает
-{:.section}
-
-### Часть 2.2
-
-
-## Явное и Неявное
-{:.blockquote}
-
-
-## ToBoolean
-
-- ...`Boolean()`
-- ...`!!`
-- ...`if`, `for`, `while`, `do/while`
-- ...Тернарный оператор `? :`
-- ...Левая часть `&&` и `||`
-
-## Операторы && и ||
-
-- ...Преобразуют в логический тип <b>левую часть</b>
-- ...<b>Вернут</b> либо левое, либо правое значение
-- ...Используют короткий цикл вычислений
-- ...`&&` старше чем `||`
-
-```js
-// && - if условие
-isComputed && doSomething()
-const data = object && object.data
-```
-{:.next}
-
-```js
-// || - значение по-умолчанию
-const data = value || {}
-```
-{:.next}
-
-
-## ToString
-
-- ...`String()`
-- ...Доступ к полю объекта: `object[value]`
-- ...Шаблонные строки: `${value}`
-
-
-## ToNumber
-
-- ...`Number()`
-- ...Математические и битовые операции
-- ...Кроме бинарного `+`
-    - ...Если один оператор строка,
-    - ...второй преобразуется в строку,
-    - ...но для объекта сработает `valueOf`
-
-
-## Необычные примеры преобразований
-
-```js
-// преобразование к числу с помощью +
-+new Date('9/23/1997') // 874958400000
-```
-{:.next}
-
-```js
-// битовое отрицание: ~x === -(x + 1)
-~42 // -43
-```
-{:.next}
-
-```js
-if (~array.indexOf(value)) {
-    // выполнится, когда что-то нашлось
-}
-```
-{:.next}
-
-```js
-// отбросить дробную часть
-3.1415 | 0 // 3
-~~3.1415   // 3
-```
-{:.next}
-
-
-## Сравнения
-
-- ...Сравнение <b>без преобразования</b>:  `===`, `!==`
-- ...`==` и `===` сравнивают объекты <b>по ссылке</b>
-- ...`==`, `!=`, `<=`, `>=`, `<`, `>` предпочитают <b>числа</b>
-- ...Особый случай: `null == undefined`
-
-### ...[JavaScript: загадочное дело выражения null >= 0](https://habr.com/ru/company/ruvds/blog/337732/) -->
+![](pictures/gbiz-dev.png)
+{:.image-right#qr-to-tg}
+
+### [http://t.me/GbizDev](http://t.me/GbizDev) (тег #ШРИ)
+{:#tg-link}
 
 
 <!-- ## Контакты
